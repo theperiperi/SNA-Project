@@ -1,0 +1,15 @@
+This dataset represents a co-authorship network extracted from the "astrophysics" (astro-ph) section of arXiv. Here’s a concise overview of what it captures:
+
+Nodes: Each node represents an author who has published a paper in the astrophysics category during the period from January 1995 to December 1999.
+Edges: An edge between two nodes indicates that the corresponding authors have collaborated on at least one paper (i.e., they are co-authors). The graph is undirected and unweighted—all collaborations are treated equally, and there are no multiple edges between the same pair of authors.
+Graph Structure:
+It is a unipartite network where all nodes are of the same type (authors).
+There are no loops, meaning an author is not connected to themselves.
+Statistical Highlights:
+Size: 16,046 nodes (authors)
+Volume: 121,251 edges (collaborations)
+Largest Connected Component (LCC): Contains 14,845 nodes, indicating most authors are part of a large, interconnected collaboration network.
+Clustering Coefficient: 0.426, which is relatively high and suggests that co-authors tend to form tight-knit groups.
+Degree: The maximum degree is 360 (indicating some authors have collaborated with many others) and the average degree is about 15.
+Diameter: 14, meaning the longest shortest path between any two authors in the network is 14 steps, and the typical distances (median of 5 and mean of about 5.1) indicate that the network is relatively well-connected.
+In summary, the dataset provides a snapshot of the collaborative landscape in astrophysics over a five-year period, highlighting the structure and intensity of scientific collaboration in this field.

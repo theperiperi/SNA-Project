@@ -1,42 +1,59 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 # ------------------------------
 # 1. Load the Graph
 # ------------------------------
 
-G = nx.read_edgelist("data.txt", nodetype=int)
-
-# # Print basic info about the graph
-# print("Graph Info:")
+print("Checkpoint: Loading graph from file...")
+G = nx.read_edgelist("as-caida/data.txt", nodetype=int)
+print("Graph loaded!")
 # print(nx.info(G))
 
 # ------------------------------
 # 2. Compute Betweenness Centrality
 # ------------------------------
 
-print("\nComputing betweenness centrality...")
+print("\nCheckpoint: Starting betweenness centrality computation...")
 # For exact computation, you can simply call:
 betweenness = nx.betweenness_centrality(G)
+print("Betweenness centrality computed.")
 
-# Optionally, show the top 5 nodes with highest betweenness centrality
+# Show the top 5 nodes with highest betweenness centrality
 top_betweenness = sorted(betweenness.items(), key=lambda x: x[1], reverse=True)[:5]
-print("Top 5 nodes by betweenness centrality:")
+print("\nTop 5 nodes by betweenness centrality:")
 for node, cent in top_betweenness:
     print(f"  Node {node}: {cent:.5f}")
 
-# If the graph is too large and you want an approximation,
-# you can use:
-# betweenness = nx.betweenness_centrality(G, k=100, seed=42)
-
 # ------------------------------
-# 3. Compute Closeness Centrality
+# 3. Compute Closeness Centrality with Progress Checkpoints
 # ------------------------------
 
-print("\nComputing closeness centrality...")
-closeness = nx.closeness_centrality(G)
+print("\nCheckpoint: Starting closeness centrality computation...")
+# Instead of using the built-in function (which doesn't offer progress info),
+# we compute it manually with a progress bar.
+closeness = {}
+
+# Iterate over all nodes with tqdm progress bar
+for node in tqdm(G.nodes(), desc="Computing closeness centrality"):
+    # Compute shortest path lengths from this node to all reachable nodes
+    sp_lengths = nx.single_source_shortest_path_length(G, node)
+    total_distance = sum(sp_lengths.values())
+    reachable_nodes = len(sp_lengths)
+    
+    # Closeness centrality formula:
+    # If reachable_nodes > 1, then closeness = (reachable_nodes - 1) / total_distance
+    if total_distance > 0 and reachable_nodes > 1:
+        closeness[node] = (reachable_nodes - 1) / total_distance
+    else:
+        closeness[node] = 0.0
+
+print("Closeness centrality computed.")
+
+# Print the top 5 nodes by closeness centrality
 top_closeness = sorted(closeness.items(), key=lambda x: x[1], reverse=True)[:5]
-print("Top 5 nodes by closeness centrality:")
+print("\nTop 5 nodes by closeness centrality:")
 for node, cent in top_closeness:
     print(f"  Node {node}: {cent:.5f}")
 
@@ -44,31 +61,32 @@ for node, cent in top_closeness:
 # 4. Compute Reciprocity
 # ------------------------------
 
-# Reciprocity is defined for directed graphs.
+print("\nCheckpoint: Converting to directed graph and computing reciprocity...")
 # Since the dataset is undirected, every edge is inherently reciprocal.
-# However, we can convert G to a directed graph to demonstrate this.
 DG = G.to_directed()
 global_reciprocity = nx.reciprocity(DG)
-print(f"\nGlobal Reciprocity (after converting to directed): {global_reciprocity:.5f}")
+print(f"Global Reciprocity (after converting to directed): {global_reciprocity:.5f}")
 
 # ------------------------------
 # 5. Compute Transitivity (Global Clustering Coefficient)
 # ------------------------------
 
+print("\nCheckpoint: Computing transitivity and average clustering coefficient...")
 transitivity = nx.transitivity(G)
-print(f"\nTransitivity (global clustering coefficient): {transitivity:.5f}")
+print(f"Transitivity (global clustering coefficient): {transitivity:.5f}")
 
-# Optionally, compute the average clustering coefficient (local clustering)
 avg_clustering = nx.average_clustering(G)
 print(f"Average Clustering Coefficient: {avg_clustering:.5f}")
 
 # ------------------------------
-# Visualize a Small Portion of the Graph
+# (Optional) Visualize a Small Portion of the Graph
 # ------------------------------
 # Warning: Visualizing the entire graph may not be informative due to its size.
-# You might choose to visualize a subgraph:
-#
+# Uncomment the following lines to visualize a subgraph:
+
 # sub_nodes = list(G.nodes())[:100]  # For example, the first 100 nodes
 # subG = G.subgraph(sub_nodes)
 # nx.draw(subG, node_size=50, with_labels=True)
 # plt.show()
+
+print("\nAll computations completed!")
