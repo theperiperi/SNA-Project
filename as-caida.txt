@@ -1,0 +1,40 @@
+The dataset you shared is the CAIDA Autonomous Systems (AS) graph collected on November 5, 2007. It represents a snapshot of the Internet’s structure at the level of Autonomous Systems (AS).
+
+🧠 What is an Autonomous System (AS)?
+An Autonomous System is a collection of IP networks and routers under the control of a single organization that presents a unified routing policy to the Internet. Examples include Internet Service Providers (ISPs), large corporations, and educational institutions.
+
+📊 What does this dataset represent?
+Nodes (n = 26,475): Each node represents an Autonomous System (AS).
+Edges (m = 53,381): An edge between two nodes indicates communication (i.e., a direct routing relationship) between two ASes.
+Undirected Graph: If AS1 connects to AS2, AS2 also connects back to AS1 (symmetric communication).
+Unweighted Graph: All edges are treated equally, meaning there are no bandwidth or traffic volume differences recorded.
+No Loops: An AS does not connect to itself.
+No Multiple Edges: There is only one edge between any two connected ASes.
+📏 Key Graph Characteristics
+Network Size:
+
+Nodes (n) = 26,475 (ASes)
+Edges (m) = 53,381 (Connections)
+Degree Distribution:
+
+Maximum Degree (dmax) = 2,628 (Most connected AS)
+Average Degree (d) = 4.03 (Each AS connects to ~4 other ASes on average)
+Degree Assortativity (ρ) = −0.194 (Slightly disassortative, meaning high-degree nodes prefer to connect to low-degree nodes)
+Connectivity:
+
+Largest Connected Component (LCC): Includes all 26,475 nodes (graph is fully connected).
+Diameter (δ) = 17 (Longest shortest path between any two nodes).
+Effective Diameter:
+50th percentile (δ0.5) = 3.4 (Half of all node pairs can be reached in ~3.4 hops).
+90th percentile (δ0.9) = 4.6 (90% of node pairs can be reached in ~4.6 hops).
+Clustering:
+
+Clustering Coefficient (c) = 0.0073 (Low clustering; ASes are not densely interconnected).
+Power Law Distribution:
+
+Exponent (γ) = 2.51 (The graph follows a power-law degree distribution, meaning a few nodes (ASes) are highly connected, while most have very few connections).
+🔍 Why is this dataset important?
+Internet Topology Research: Understanding the structure of the Internet at the AS level.
+Routing Analysis: Analyzing how information flows between different autonomous systems.
+Network Resilience: Studying how robust the Internet is against failures or attacks.
+Graph Theory Applications: Modeling large-scale networks and testing algorithms on real-world graphs.
