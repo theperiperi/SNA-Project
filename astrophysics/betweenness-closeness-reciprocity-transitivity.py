@@ -79,10 +79,9 @@ avg_clustering = nx.average_clustering(G)
 print(f"Average Clustering Coefficient: {avg_clustering:.5f}")
 
 # ------------------------------
-# (Optional) Visualize a Small Portion of the Graph
+# Visualize a Small Portion of the Graph
 # ------------------------------
 # Warning: Visualizing the entire graph may not be informative due to its size.
-# Uncomment the following lines to visualize a subgraph:
 
 sub_nodes = list(G.nodes())[:100]  # For example, the first 100 nodes
 subG = G.subgraph(sub_nodes)
