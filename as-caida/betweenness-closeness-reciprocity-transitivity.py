@@ -20,9 +20,9 @@ print("\nCheckpoint: Starting betweenness centrality computation...")
 betweenness = nx.betweenness_centrality(G)
 print("Betweenness centrality computed.")
 
-# Show the top 5 nodes with highest betweenness centrality
-top_betweenness = sorted(betweenness.items(), key=lambda x: x[1], reverse=True)[:5]
-print("\nTop 5 nodes by betweenness centrality:")
+# Show the top 10 nodes with highest betweenness centrality
+top_betweenness = sorted(betweenness.items(), key=lambda x: x[1], reverse=True)[:10]
+print("\nTop 10 nodes by betweenness centrality:")
 for node, cent in top_betweenness:
     print(f"  Node {node}: {cent:.5f}")
 
@@ -51,14 +51,35 @@ for node in tqdm(G.nodes(), desc="Computing closeness centrality"):
 
 print("Closeness centrality computed.")
 
-# Print the top 5 nodes by closeness centrality
-top_closeness = sorted(closeness.items(), key=lambda x: x[1], reverse=True)[:5]
-print("\nTop 5 nodes by closeness centrality:")
+# Print the top 10 nodes by closeness centrality
+top_closeness = sorted(closeness.items(), key=lambda x: x[1], reverse=True)[:10]
+print("\nTop 10 nodes by closeness centrality:")
 for node, cent in top_closeness:
     print(f"  Node {node}: {cent:.5f}")
 
 # ------------------------------
-# 4. Compute Reciprocity
+# 4. Visualize Closeness Centrality Graph
+# ------------------------------
+
+print("\nCheckpoint: Visualizing closeness centrality graph...")
+plt.figure(figsize=(12, 8))
+
+# Use uniform node size instead of scaling by closeness
+node_sizes = [150 for node in G.nodes()]
+
+# Draw the graph
+pos = nx.spring_layout(G, seed=42)  # Fixed layout for consistency
+nx.draw(G, pos, node_size=node_sizes, with_labels=False, node_color='dodgerblue', edge_color='gray', alpha=0.7)
+
+# Highlight top 10 nodes by closeness centrality
+top_nodes = [node for node, _ in top_closeness]
+nx.draw_networkx_nodes(G, pos, nodelist=top_nodes, node_size=800, node_color='red')
+
+plt.title("Graph Visualization with Closeness Centrality (Top Nodes in Red)")
+plt.show()
+
+# ------------------------------
+# 5. Compute Reciprocity
 # ------------------------------
 
 print("\nCheckpoint: Converting to directed graph and computing reciprocity...")
@@ -68,7 +89,7 @@ global_reciprocity = nx.reciprocity(DG)
 print(f"Global Reciprocity (after converting to directed): {global_reciprocity:.5f}")
 
 # ------------------------------
-# 5. Compute Transitivity (Global Clustering Coefficient)
+# 6. Compute Transitivity (Global Clustering Coefficient)
 # ------------------------------
 
 print("\nCheckpoint: Computing transitivity and average clustering coefficient...")
@@ -77,15 +98,3 @@ print(f"Transitivity (global clustering coefficient): {transitivity:.5f}")
 
 avg_clustering = nx.average_clustering(G)
 print(f"Average Clustering Coefficient: {avg_clustering:.5f}")
-
-# ------------------------------
-# Visualize a Small Portion of the Graph
-# ------------------------------
-# Warning: Visualizing the entire graph may not be informative due to its size.
-
-sub_nodes = list(G.nodes())[:100]  # For example, the first 100 nodes
-subG = G.subgraph(sub_nodes)
-nx.draw(subG, node_size=50, with_labels=True)
-plt.show()
-
-print("\nAll computations completed!")
