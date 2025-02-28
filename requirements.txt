@@ -1,0 +1,11 @@
+networkx>=2.8.0
+pandas>=1.4.0
+numpy>=1.21.0
+matplotlib>=3.5.0
+plotly>=5.5.0
+scipy>=1.8.0
+scikit-learn>=1.0.0
+python-louvain>=0.16
+tqdm>=4.64.0
+jupyter>=1.0.0
+requests>=2.27.0 
